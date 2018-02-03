@@ -1,0 +1,26 @@
+{
+  "name": "vote-server",
+  "version": "1.0.0",
+  "description": "A Vote Server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sunkint/vote-server.git"
+  },
+  "keywords": [
+    "Vote"
+  ],
+  "author": "Sunkint",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sunkint/vote-server/issues"
+  },
+  "homepage": "https://github.com/sunkint/vote-server#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
