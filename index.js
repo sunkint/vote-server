@@ -1,8 +1,23 @@
 let express = require('express');
 let app = express();
 
+let mysql = require('mysql');
+let pool = mysql.createPool({
+  host: 'localhost',
+  user: 'root',
+  password: 'qwer1234',
+  database: 'ybusad',
+});
+
 app.get('/', (req, res) => {
-  res.send('Hello World');
+  // res.append('Content-type', 'text/plain; charset=utf8');
+  let result = {data: []};
+  pool.query('select * from myessay order by ID desc limit 5', (err, results, fields) => {
+    for(let d of results) {
+      result.data.push(d.Content);
+    }
+    res.send(result);
+  });
 });
 
 let server = app.listen(3000, () => {
