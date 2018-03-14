@@ -21,7 +21,12 @@
   },
   "homepage": "https://github.com/sunkint/vote-server#readme",
   "dependencies": {
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
     "express": "^4.16.2",
-    "mysql": "^2.15.0"
+    "mysql": "^2.15.0",
+    "request": "^2.83.0",
+    "underscore": "^1.8.3",
+    "uuid": "^3.2.1"
   }
 }
