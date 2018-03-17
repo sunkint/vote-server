@@ -4,24 +4,9 @@ let _ = require('underscore');
 let query = require('./query');
 
 let calculate = function (data, ucode, vote_id, resolve) {
-  // console.log("确幸数据是：");
-  // console.log(data);
-
   let list = {};
   for(let d of data) {
-    list[d[0].guid] = {count: d[0].count};
-  }
-  let sum = 0;
-  data.map(v => {sum += v[0].count});
-
-  for(let guid in list) {
-    let d = list[guid];
-    d.voted = false;
-    if(d.count == 0) {
-      d.percent = 0;
-    }else {
-      d.percent = Math.round(100 * d.count / sum);
-    }
+    list[d[0].guid] = {count: d[0].count, percent: 0, voted: false}; // 百分比计算交给前端，因为前端更好分组
   }
   
   if(ucode != '') {
