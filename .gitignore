@@ -58,3 +58,7 @@ typings/
 .env
 
 .vscode/
+
+*.mp.config
+*.qn.config
+*.tmp

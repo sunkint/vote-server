@@ -4,6 +4,7 @@ let AddVote = require('./handlers/AddVote');
 let GetVoteList = require('./handlers/GetVoteList');
 let GetStatData = require('./handlers/GetStatData');
 let VoteAction = require('./handlers/Vote');
+let GetAuthFromWxa = require('./handlers/wxa/GetAuth');
 
 module.exports = {
   '/getAuth/xzwhome': GetAuthFromXzw,
@@ -11,4 +12,5 @@ module.exports = {
   '/getVoteList': {handler: GetVoteList, method: 'get'},
   '/getStatData': {handler: GetStatData, method: 'get'},
   '/vote': {handler: VoteAction, method: 'post'},
+  '/getAuth/wxa': {handler: GetAuthFromWxa, method: 'post'},
 }

@@ -114,7 +114,7 @@ module.exports = (req, res) => {
       }),
     };
 
-    console.log(voteData);
+    // console.log(voteData);
 
     // 加入数据库
     db.query('insert into fly_vote (title, description, vote_data, author, author_code, deadline) values (?,?,?,?,?,?)', 

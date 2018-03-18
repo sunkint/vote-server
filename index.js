@@ -58,5 +58,5 @@ let server = app.listen(IS_PRODUCTION ? 80 : 3000, () => {
   let host = server.address().address;
   let port = server.address().port;
 
-  console.log(`Server is listening at http://${host}:${port} ${IS_PRODUCTION ? '(production)' : '(debug)'}`);
+  console.log(`Server is listening at http://${host}:${port} ${IS_PRODUCTION ? '(production)' : '(development)'}`);
 });

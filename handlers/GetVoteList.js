@@ -2,8 +2,10 @@ let db = require('../database');
 let getVoteData = require('../common/GetVoteData');
 
 module.exports = function (req, res) {
-  let maxId = parseInt(req.query.maxId) || 9999999;
-  db.query('select * from fly_vote where is_public=1 and id<=? order by id desc limit 20', [maxId], (err, results) => {
+  const maxId = parseInt(req.query.maxId) || 9999999;
+  const count = 15;
+
+  db.query('select * from fly_vote where is_public=1 and id<? order by id desc limit ?', [maxId, count + 1], (err, results) => {
     let list = [];
     for(let r of results) {
       let voteData = JSON.parse(r.vote_data);
@@ -11,6 +13,12 @@ module.exports = function (req, res) {
       voteData.is_expired = r.deadline.getTime() < Date.now();
       list.push(voteData);
     }
-    res.send({list});
+    let isComplete = true;
+    if(list[count] !== undefined) {
+      isComplete = false;
+      list.splice(count, 1);
+    }
+    res.send({list, complete: isComplete});
   });
+
 }
