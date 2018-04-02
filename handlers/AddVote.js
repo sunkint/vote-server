@@ -9,7 +9,7 @@ module.exports = (req, res) => {
   let q = req.body;
   let E = (msg, code = 400) => {res.status(code).send({msg})};
 
-  checkUser(req.cookies.vote_user_uid).then(user => {
+  checkUser(req.cookies.vote_user_uid || req.get('user_uid')).then(user => {
     
     let isVaildRequest = _.isString(q.title)
       && _.isString(q.description)
@@ -79,14 +79,14 @@ module.exports = (req, res) => {
     let deadlineTime = '2099-12-31 23:59:59'
       , date = new Date(deadlineTime);
 
-    if(q.deadline > 0) { // 经过多少时间（秒）结束
+    if(!_.isUndefined(q.deadline) && q.deadline > 0) { // 经过多少时间（秒）结束
       // 限制最长过期时间为100年
       if(q.deadline > 100 * 365.2422 * 24 * 60 * 60) {
         q.deadline = 100 * 365.2422 * 24 * 60 * 60;
       }
 
       date = new Date(Date.now() + q.deadline * 1000);
-    }else if(q.deadline < 0) { // 指定时间结束
+    }else if(_.isUndefined(q.deadline) || q.deadline < 0) { // 指定时间结束
       deadlineTime = `${q.deadlineDate} ${q.deadlineTime}`;
       date = new Date(deadlineTime);
 
@@ -113,8 +113,6 @@ module.exports = (req, res) => {
         }
       }),
     };
-
-    // console.log(voteData);
 
     // 加入数据库
     db.query('insert into fly_vote (title, description, vote_data, author, author_code, deadline) values (?,?,?,?,?,?)', 

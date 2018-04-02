@@ -8,7 +8,7 @@ let getVoteData = require('../common/GetVoteData');
 module.exports = function (req, res) {
   let params = req.body;
 
-  checkUser(req.cookies.vote_user_uid).then(user => {
+  checkUser(req.cookies.vote_user_uid || req.get('user_uid')).then(user => {
     let id = parseInt(params.id), options = params.options;
     let sendError = (msg, code = 400) => {res.status(code).send({msg})};
     if(_.isNaN(id) || !_.isArray(options) || options.length === 0) {

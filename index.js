@@ -5,6 +5,9 @@
 
 // 加载应用框架
 let express = require('express');
+let fs = require('fs');
+let http = require('http');
+let https = require('https');
 let app = express();
 
 // 加载中间件
@@ -19,7 +22,7 @@ const IS_PRODUCTION = require('./common/CheckIfProd');
 // 配置跨域
 let crossDomain = (req, res, next) => {
   res.set({
-    'Access-Control-Allow-Origin': IS_PRODUCTION ? 'http://vote.ybusad.com' : 'http://dev.vote.me:8999',
+    'Access-Control-Allow-Origin': IS_PRODUCTION ? 'https://vote.ybusad.com' : 'http://dev.vote.me:8999',
     'Access-Control-Allow-Headers': 'Content-type',
     'Access-Control-Max-Age': '300',
     'Access-Control-Allow-Credentials': 'true',
@@ -54,9 +57,26 @@ for(let path in routes) {
 }
 
 // 启动服务
-let server = app.listen(IS_PRODUCTION ? 80 : 3000, () => {
-  let host = server.address().address;
-  let port = server.address().port;
+if(IS_PRODUCTION) {
 
-  console.log(`Server is listening at http://${host}:${port} ${IS_PRODUCTION ? '(production)' : '(development)'}`);
-});
+  // 加载https配置
+  let cert = {
+    key: fs.readFileSync('/root/.acme.sh/vote.ybusad.com/vote.ybusad.com.key', 'utf8'),
+    cert: fs.readFileSync('/root/.acme.sh/vote.ybusad.com/fullchain.cer', 'utf8'),
+  };
+
+  let httpServer = http.createServer(app);
+  let httpsServer = https.createServer(cert, app);
+  httpServer.listen(80);
+  httpsServer.listen(443);
+
+  console.log('Server started, (http, https)');
+
+}else {
+  let server = app.listen(3000, () => {
+    let host = server.address().address;
+    let port = server.address().port;
+
+    console.log(`Server is listening at http://${host}:${port} ${IS_PRODUCTION ? '(production)' : '(development)'}`);
+  });
+}

@@ -44,8 +44,8 @@ module.exports = function (req, res) {
     }
 
     let ucode = result.openid;
-    db.query('select count(*) c, avatar, avatar_key from fly_user where user_code=?', [ucode], (err, results) => {
-      const isUserExists = results[0].c > 0;
+    db.query('select count(*) c, avatar, avatar_key from fly_user where user_code=? group by avatar, avatar_key limit 1', [ucode], (err, results) => {
+      const isUserExists = !_.isUndefined(results) && results.length > 0 && results[0].c > 0;
       const uid = uuidV4();
   
       let handler = key => {
