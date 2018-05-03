@@ -13,6 +13,8 @@ let VoteForWxa = require('./handlers/wxa/Vote');
 let GetCreatedForWxa = require('./handlers/wxa/GetCreated');
 let GetVotedForWxa = require('./handlers/wxa/GetVoted');
 
+let deleteVote = require('./handlers/manage/DeleteVote');
+
 module.exports = {
   '/getAuth/xzwhome': GetAuthFromXzw,
   '/getAuth/wxa': {handler: GetAuthFromWxa, method: 'post'},
@@ -27,4 +29,6 @@ module.exports = {
   '/wxa/vote': {handler: VoteForWxa, method: 'post'},
   '/wxa/getCreated': GetCreatedForWxa,
   '/wxa/getVoted': GetVotedForWxa,
+
+  '/manage/deleteVote': {handler: deleteVote, method: 'post'},
 }

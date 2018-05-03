@@ -33,6 +33,9 @@ module.exports = function (req, res) {
     + `appid=${AppID}&secret=${secretID}&js_code=${code}&grant_type=authorization_code`;
 
   request.get(url, (err, _res, body) => {
+    console.log('微信服务器回调：');
+    console.log(body);
+    
     if(err) {
       res.status(502).send({msg: '验证失败请重试'});
       return;
@@ -50,7 +53,7 @@ module.exports = function (req, res) {
   
       let handler = key => {
         if(isUserExists) {
-          db.query('update fly_user set avatar_key=?, uid=?, avatar=? where user_code=?', [key, uid, avatarUrl, ucode], (err, results) => {
+          db.query('update fly_user set user_name=?, avatar_key=?, uid=?, avatar=? where user_code=?', [uname, key, uid, avatarUrl, ucode], (err, results) => {
             if(err) {
               res.status(401).send({msg: '用户非法'});
               return;
@@ -83,6 +86,7 @@ module.exports = function (req, res) {
       }else {
         uploadQiniu(avatarUrl).then(handler).catch(errHandler);
       }
+      
     });
   });
 }

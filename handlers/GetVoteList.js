@@ -1,6 +1,17 @@
 let db = require('../database');
 let getVoteData = require('../common/GetVoteData');
 
+function getViewTime (d) {
+  let b0 = n => n < 10 ? '0' + n : n.toString();
+  let today = new Date();
+  let isToday = t => t.getTime() >= new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0).getTime();
+  if(isToday(d)) {
+    return `${d.getHours()}:${b0(d.getMinutes())}`;
+  }else {
+    return `${d.getMonth() + 1}-${d.getDate()}`;
+  }
+}
+
 module.exports = function (req, res) {
   const maxId = parseInt(req.query.maxId) || 9999999;
   const count = 15;
@@ -11,6 +22,7 @@ module.exports = function (req, res) {
       let voteData = JSON.parse(r.vote_data);
       voteData.id = r.id;
       voteData.is_expired = r.deadline.getTime() < Date.now();
+      voteData.create_time = getViewTime(r.create_time);
       list.push(voteData);
     }
     let isComplete = true;
